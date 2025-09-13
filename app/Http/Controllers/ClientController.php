@@ -12,7 +12,8 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $clients = Client::all();
+        return view('clients.index', compact('clients'));
     }
 
     /**
@@ -20,7 +21,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+        return view('clients.create');
     }
 
     /**
@@ -28,7 +29,15 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|max:20|unique:clients,phone',
+            'car_model' => 'nullable|string|max:255',
+        ]);
+
+        Client::create($validated);
+
+        return redirect()->route('clients.index')->with('success', 'client added');
     }
 
     /**
@@ -36,7 +45,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        //
+        return view('clients.show', compact('client'));
     }
 
     /**
@@ -44,7 +53,7 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        //
+        return view('clients.edit', compact('client'));
     }
 
     /**
@@ -52,7 +61,15 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|max:20|unique:clients,phone',
+            'car_model' => 'nullable|string|max:255',
+        ]);
+
+        $client = Client::update($validated);
+
+        return redirect()->route('clients.index')->with('success', 'Data was updated');
     }
 
     /**
@@ -60,6 +77,8 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $client->delete();
+
+        return redirect()->route('clients.index')->with('success', 'Client deleted');
     }
 }

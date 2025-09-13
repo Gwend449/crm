@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
+    protected $fillable = [
+        'name',
+        'email',
+        'car_model',
+    ];
+
     public function client()
     {
         return $this->hasMany(Deal::class);
