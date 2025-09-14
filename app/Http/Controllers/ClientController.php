@@ -31,13 +31,13 @@ class ClientController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|max:20|unique:clients,phone',
+            'email' => 'required|string|max:20|unique:clients,email',
             'car_model' => 'nullable|string|max:255',
         ]);
 
         Client::create($validated);
 
-        return redirect()->route('clients.index')->with('success', 'client added');
+        return redirect()->route('clients.index')->with('success', 'Client added');
     }
 
     /**
@@ -63,11 +63,11 @@ class ClientController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|max:20|unique:clients,phone',
+            'email' => 'required|string|max:20|unique:clients,email,' . $client->id,
             'car_model' => 'nullable|string|max:255',
         ]);
 
-        $client = Client::update($validated);
+        $client->update($validated);
 
         return redirect()->route('clients.index')->with('success', 'Data was updated');
     }

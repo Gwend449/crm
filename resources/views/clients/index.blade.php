@@ -1,4 +1,4 @@
-@extends('layouts.app');
+@extends('layouts.app')
 
 @section('content')
     <div class="max-w-6xl mx-auto mt-8">
@@ -8,11 +8,11 @@
             Add Client
         </a>
 
-        @if (session('success'))
+        <!-- @if (session('success'))
             <div class="mt-4 p-2 bg-green-200 text-green-800 rounded">
                 {{ session('success') }}
             </div>
-        @endif
+        @endif -->
 
         <table class="w-full mt-6 border">
             <thead>
@@ -34,7 +34,8 @@
                         <td class="p-2 border flex gap-2">
                             <a href="{{ route('clients.show', $client) }}" class="text-blue-600">View</a>
                             <a href="{{ route('clients.edit', $client) }}" class="text-yellow-600">Edit</a>
-                            <form action="{{ route('clients.destroy') }}" method="POST"
+
+                            <form action="{{ route('clients.destroy', $client) }}" method="POST"
                                 onsubmit="return confirm('Are you sure?')">
                                 @csrf
                                 @method('DELETE')

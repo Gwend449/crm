@@ -12,7 +12,8 @@ class DealController extends Controller
      */
     public function index()
     {
-        //
+        $deals = Deal::all();
+        return view('deals.index', compact('deals'));
     }
 
     /**
@@ -20,7 +21,7 @@ class DealController extends Controller
      */
     public function create()
     {
-        //
+        return view('deals.create');
     }
 
     /**
@@ -28,7 +29,9 @@ class DealController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            
+        ]);
     }
 
     /**
