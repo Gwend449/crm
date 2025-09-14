@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Client extends Model
 {
+    use HasFactory;
+    //use SoftDeletes;
     protected $fillable = [
         'name',
         'email',
         'car_model',
     ];
 
-    public function client()
+    public function deal()
     {
         return $this->hasMany(Deal::class);
     }

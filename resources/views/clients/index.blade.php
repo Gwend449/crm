@@ -5,14 +5,8 @@
         <h1 class="text-2xl font-bold mb-4">Clients</h1>
 
         <a href="{{ route('clients.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-            Add Client
+            + Add Client
         </a>
-
-        <!-- @if (session('success'))
-            <div class="mt-4 p-2 bg-green-200 text-green-800 rounded">
-                {{ session('success') }}
-            </div>
-        @endif -->
 
         <table class="w-full mt-6 border">
             <thead>
