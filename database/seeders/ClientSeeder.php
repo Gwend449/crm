@@ -13,31 +13,29 @@ class ClientSeeder extends Seeder
      */
     public function run(): void
     {
-        $clients = [
-            [
-                'name' => 'Иван Петров',
-                'email' => 'ivan@example.com',
-                'car_model' => 'Toyota Land Cruiser',
-            ],
-            [
-                'name' => 'Анна Сидорова',
-                'email' => 'anna@example.com',
-                'car_model' => 'BMW X5',
-            ],
-            [
-                'name' => 'Сергей Иванов',
-                'email' => 'sergey@example.com',
-                'car_model' => 'Mercedes S-Class',
-            ],
-            [
-                'name' => 'Елена Смирнова',
-                'email' => 'elena@example.com',
-                'car_model' => 'Lexus RX',
-            ],
-        ];
+        // $clients = [
+        //     [
+        //         'name' => 'Иван Петров',
+        //         'email' => 'ivan@example.com',
+        //         'car_model' => 'Toyota Land Cruiser',
+        //     ],
+        //     [
+        //         'name' => 'Анна Сидорова',
+        //         'email' => 'anna@example.com',
+        //         'car_model' => 'BMW X5',
+        //     ],
+        //     [
+        //         'name' => 'Сергей Иванов',
+        //         'email' => 'sergey@example.com',
+        //         'car_model' => 'Mercedes S-Class',
+        //     ],
+        //     [
+        //         'name' => 'Елена Смирнова',
+        //         'email' => 'elena@example.com',
+        //         'car_model' => 'Lexus RX',
+        //     ],
+        // ];
 
-        foreach ($clients as $client) {
-            Client::create($client);
-        }
+        Client::factory()->count(15)->create();
     }
 }

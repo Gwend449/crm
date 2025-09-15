@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('client_id')->constrained()->onDelete('cascade');
             $table->string('service_name');
             $table->decimal('price', 10, 2)->nullable();
-            $table->dateTime('deal_at');
-            $table->enum('status', ['new', 'in_progress', 'completed', 'canceled'])->default('new');
+            $table->dateTime('date');
+            $table->enum('status', ['new', 'pending', 'completed', 'canceled'])->default('new');
             $table->text('comment')->nullable();
             $table->timestamps();
         });

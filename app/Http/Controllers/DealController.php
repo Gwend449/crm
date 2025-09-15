@@ -30,7 +30,7 @@ class DealController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            
+
         ]);
     }
 
@@ -63,6 +63,8 @@ class DealController extends Controller
      */
     public function destroy(Deal $deal)
     {
-        //
+        $deal->delete();
+
+        return redirect()->route('deals.index')->with('success', 'Deal was deleted');
     }
 }
