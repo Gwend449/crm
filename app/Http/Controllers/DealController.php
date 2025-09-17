@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Deal;
 use App\Models\Client;
+use App\Services\DealService;
+use App\Services\ClientService;
 use Illuminate\Http\Request;
 
 class DealController extends Controller
@@ -11,47 +13,39 @@ class DealController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(DealService $dealService)
     {
-        $deals = Deal::all();
+        $dealService->getAll();
         return view('deals.index', compact('deals'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create(Request $request, DealService $dealService)
     {
-        $clients = Client::all();
-        $selectedClient = null;
-
-        if($request->has('client_id')) {
-            $selectedClient = Client::find($request->client_id);
-            // return redirect()->route('deals.create')->with('selected_client', $selectedClient)->withInput();
-            session(['selected_client' => $selectedClient]);
-        }
-
         return view('deals.create', compact('clients', 'selectedClient'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, DealService $dealService)
     {
-        $validated = $request->validate([
+        $rules = [
             'date' => 'required|date|after:today',
             'client_id' => 'required|exists:clients,id',
             'service_name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'comment' => 'nullable|string|max:255',
-        ]);
+        ];
+        $rules['status'] = 'new';
 
-        $validated['status'] = 'new';
+        $validated = $request->validate($rules);
+        $dealService->store($validated);
 
-        Deal::create($validated);
-
-        return redirect()->route('deals.index')->with('success', 'Deal created');
+        return redirect()->route('deals.index')
+            ->with('success', 'Deal created');
     }
 
     /**
@@ -59,7 +53,7 @@ class DealController extends Controller
      */
     public function show(Deal $deal)
     {
-        //
+        return view('clients.show', compact($deal));
     }
 
     /**
@@ -67,26 +61,36 @@ class DealController extends Controller
      */
     public function edit(Deal $deal)
     {
-        //
+        return view('deals.edit', compact('client'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Deal $deal)
+    public function update(Request $request, Deal $deal, DealService $dealService)
     {
-        //
+        $rules = [
+            'date' => 'required|date|after:today',
+            'client_id' => 'required|exists:clients,id',
+            'service_name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'comment' => 'nullable|string|max:255',
+        ];
+
+        $validated = $request->validate($rules);
+        $dealService->update($deal, $validated);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Deal $deal)
+    public function destroy(Deal $deal, DealService $dealService)
     {
-        if (!$deal->exists()) {
-            return redirect()->route('deals.index')->with('error', 'Deal was not deleted');
-        }
-        $deal->delete();
+        if($dealService->find($deal->id))
+        {
+            $dealService->delete($deal);
+        } else {return redirect()->route('deals.index')->with('error', 'Deal deletion error');}
+
         return redirect()->route('deals.index')->with('success', 'Deal was deleted');
     }
 }

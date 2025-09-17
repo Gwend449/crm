@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Services\ClientService;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
+    // public function __construct(
+    //     protected ClientService $clientService)
+    // {}
+
     /**
      * Display a listing of the resource.
      */
@@ -27,17 +32,19 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, ClientService $clientService)
     {
-        $validated = $request->validate([
+        $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:20|unique:clients,email',
             'car_model' => 'nullable|string|max:255',
-        ]);
+        ];
 
-        Client::create($validated);
+        $validated = $request->validate($rules);
+        $clientService->store($validated);
 
-        return redirect()->route('clients.index')->with('success', 'Client added');
+        return redirect()->route('clients.index')
+            ->with('success', 'Client added');
     }
 
     /**
@@ -59,25 +66,30 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Client $client)
+    public function update(Request $request, Client $client, ClientService $clientService)
     {
-        $validated = $request->validate([
+        $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|max:20|unique:clients,email,' . $client->id,
+            'email' => 'required|string|max:20|unique:clients,email'.$client->id,
             'car_model' => 'nullable|string|max:255',
-        ]);
+        ];
 
-        $client->update($validated);
+        $validated = $request->validate($rules);
+        $clientService->update($client, $validated);
 
-        return redirect()->route('clients.index')->with('success', 'Data was updated');
+        return redirect()->route('clients.index')
+            ->with('success', 'Client was updated');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Client $client)
+    public function destroy(Client $client, ClientService $clientService)
     {
-        $client->delete();
+        if($clientService->find($client->id))
+        {
+            $clientService->delete($client);
+        } else { return redirect()->route('clients.index')->with('error', 'Client deletion error');}
 
         return redirect()->route('clients.index')->with('success', 'Client deleted');
     }
