@@ -12,9 +12,9 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(ClientService $clientsService)
     {
-        $clients = Client::all();
+        $clients = $clientsService->getAllClients();
         return view('clients.index', ['clients' => $clients]);
     }
 

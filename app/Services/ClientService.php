@@ -6,9 +6,9 @@ use App\Models\Client;
 
 class ClientService {
 
-    public function getAll()
+    public function getAllClients()
     {
-        return Client::all();
+        return Client::simplePaginate(10);
     }
 
     public function find(int $id): ?Client
