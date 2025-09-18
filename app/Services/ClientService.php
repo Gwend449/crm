@@ -13,7 +13,7 @@ class ClientService {
 
     public function find(int $id): ?Client
     {
-        return CLient::find($id);
+        return Client::find($id);
     }
     public function store(array $data): Client
     {
