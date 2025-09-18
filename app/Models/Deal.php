@@ -9,15 +9,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Deal extends Model
 {
     use HasFactory;
-
-    protected $casts = [
-        'date' => 'datetime',
-    ];
     protected $fillable = [
         'client_id',
         'service_name',
         'price',
         'date',
+    ];
+
+    protected $casts = [
+        'date' => 'datetime',
     ];
 
     public function client()

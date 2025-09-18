@@ -19,7 +19,7 @@ class DealSeeder extends Seeder
             Client::factory(10)->create();
         }
 
-        Client::all()->each(function ($client) {
+        Client::whereDoesntHave('deals')->each(function ($client) {
             Deal::factory()->create([
                 'client_id' => $client->id
             ]);
