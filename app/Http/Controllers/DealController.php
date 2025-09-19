@@ -15,18 +15,24 @@ class DealController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(DealService $dealService)
     {
-        $deals = Deal::get();
-        return view('deals.index', compact('deals'));
+        $deals = $dealService->getAllDeals();
+        return view('deals.index', ['deals' => $deals]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create()
     {
-        return view('deals.create', compact('clients', 'selectedClient'));
+        $clients = Client::all();
+
+        //оставлю пока так в учебном проекте,
+        // понимаю что с базой в 1к+ записей нужно реализовать поиск по клиентам с использованием фронт библиотек,
+        // но пока оставим это.
+
+        return view('deals.create', ['clients' => $clients]);
     }
 
     /**
@@ -45,7 +51,7 @@ class DealController extends Controller
      */
     public function show(Deal $deal)
     {
-        return view('clients.show', compact($deal));
+        return view('deal.show', ['deals' => $deal]);
     }
 
     /**
@@ -53,7 +59,7 @@ class DealController extends Controller
      */
     public function edit(Deal $deal)
     {
-        return view('deals.edit', compact('client'));
+        return view('deals.edit', ['deals' => $deal]);
     }
 
     /**

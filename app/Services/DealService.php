@@ -6,9 +6,9 @@ use App\Models\Deal;
 
 class DealService {
 
-    public function getAll()
+    public function getAllDeals()
     {
-        return Deal::all();
+        return Deal::paginate(10);
     }
 
     public function find(int $id): ?Deal
