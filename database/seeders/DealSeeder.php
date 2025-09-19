@@ -15,14 +15,13 @@ class DealSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Client::count() === 0){
+        // if no clients, create ten
+        if (Client::count() === 0) {
             Client::factory(10)->create();
         }
 
-        Client::whereDoesntHave('deals')->each(function ($client) {
-            Deal::factory()->create([
-                'client_id' => $client->id
-            ]);
+        Client::WhereDoesntHave('deals')->each(function ($client) {
+            Deal::factory()->create(['client_id' => $client->id]);
         });
     }
 }

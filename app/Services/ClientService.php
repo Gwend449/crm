@@ -6,14 +6,14 @@ use App\Models\Client;
 
 class ClientService {
 
-    public function getAll()
+    public function getAllClients()
     {
-        return Client::all();
+        return Client::simplePaginate(10);
     }
 
     public function find(int $id): ?Client
     {
-        return CLient::find($id);
+        return Client::find($id);
     }
     public function store(array $data): Client
     {

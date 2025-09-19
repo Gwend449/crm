@@ -2,23 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCLientRequest;
+use App\Http\Requests\UpdateCLientRequest;
 use App\Models\Client;
 use App\Services\ClientService;
-use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    // public function __construct(
-    //     protected ClientService $clientService)
-    // {}
-
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(ClientService $clientsService)
     {
-        $clients = Client::all();
-        return view('clients.index', compact('clients'));
+        $clients = $clientsService->getAllClients();
+        return view('clients.index', ['clients' => $clients]);
     }
 
     /**
@@ -32,16 +29,9 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, ClientService $clientService)
+    public function store(StoreCLientRequest $request, ClientService $clientService)
     {
-        $rules = [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|max:20|unique:clients,email',
-            'car_model' => 'nullable|string|max:255',
-        ];
-
-        $validated = $request->validate($rules);
-        $clientService->store($validated);
+        $clientService->store($request->validated());
 
         return redirect()->route('clients.index')
             ->with('success', 'Client added');
@@ -66,16 +56,9 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Client $client, ClientService $clientService)
+    public function update(UpdateCLientRequest $request, Client $client, ClientService $clientService)
     {
-        $rules = [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|max:20|unique:clients,email'.$client->id,
-            'car_model' => 'nullable|string|max:255',
-        ];
-
-        $validated = $request->validate($rules);
-        $clientService->update($client, $validated);
+        $clientService->update($client, $request->validated());
 
         return redirect()->route('clients.index')
             ->with('success', 'Client was updated');
@@ -86,11 +69,9 @@ class ClientController extends Controller
      */
     public function destroy(Client $client, ClientService $clientService)
     {
-        if($clientService->find($client->id))
-        {
+        if ($clientService->find($client->id)) {
             $clientService->delete($client);
-        } else { return redirect()->route('clients.index')->with('error', 'Client deletion error');}
-
-        return redirect()->route('clients.index')->with('success', 'Client deleted');
+            return redirect()->route('clients.index')->with('success', 'Client deleted');
+        }
     }
 }

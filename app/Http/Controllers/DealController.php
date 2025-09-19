@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDealRequest;
+use App\Http\Requests\UpdateDealRequest;
 use App\Models\Deal;
 use App\Models\Client;
 use App\Services\DealService;
@@ -13,16 +15,16 @@ class DealController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(DealService $dealService)
+    public function index()
     {
-        $dealService->getAll();
+        $deals = Deal::get();
         return view('deals.index', compact('deals'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request, DealService $dealService)
+    public function create(Request $request)
     {
         return view('deals.create', compact('clients', 'selectedClient'));
     }
@@ -30,19 +32,9 @@ class DealController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, DealService $dealService)
+    public function store(StoreDealRequest $request, DealService $dealService)
     {
-        $rules = [
-            'date' => 'required|date|after:today',
-            'client_id' => 'required|exists:clients,id',
-            'service_name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'comment' => 'nullable|string|max:255',
-        ];
-        $rules['status'] = 'new';
-
-        $validated = $request->validate($rules);
-        $dealService->store($validated);
+        $dealService->store($request->validated());
 
         return redirect()->route('deals.index')
             ->with('success', 'Deal created');
@@ -67,18 +59,11 @@ class DealController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Deal $deal, DealService $dealService)
+    public function update(UpdateDealRequest $request, Deal $deal, DealService $dealService)
     {
-        $rules = [
-            'date' => 'required|date|after:today',
-            'client_id' => 'required|exists:clients,id',
-            'service_name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'comment' => 'nullable|string|max:255',
-        ];
+        $dealService->update($deal, $request->validated());
 
-        $validated = $request->validate($rules);
-        $dealService->update($deal, $validated);
+        return redirect('deals.index')->with('success', 'Deal was updated');
     }
 
     /**
@@ -86,11 +71,9 @@ class DealController extends Controller
      */
     public function destroy(Deal $deal, DealService $dealService)
     {
-        if($dealService->find($deal->id))
-        {
+        if ($dealService->find($deal->id)) {
             $dealService->delete($deal);
-        } else {return redirect()->route('deals.index')->with('error', 'Deal deletion error');}
-
-        return redirect()->route('deals.index')->with('success', 'Deal was deleted');
+            return redirect()->route('deals.index')->with('success', 'Deal was deleted');
+        }
     }
 }
