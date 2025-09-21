@@ -3,30 +3,38 @@
 namespace App\Services;
 
 use App\Models\Client;
+use App\DTO\ClientDTO;
+use App\Mappers\ClientMapper;
 
 class ClientService {
 
     public function getAllClients()
     {
-        return Client::simplePaginate(10);
+        return Client::paginate(10);
     }
 
     public function find(int $id): ?Client
     {
         return Client::find($id);
     }
-    public function store(array $data): Client
+    public function store(ClientDTO $dto): Client
     {
-        return Client::create($data);
+        $client = ClientMapper::toModel($dto);
+        $client->save();
+
+        return $client;
     }
 
-    public function update(Client $client, array $data)
+    public function update(Client $client, ClientDTO $dto)
     {
-        return $client->update($data);
+        $client = ClientMapper::updateModel($client, $dto);
+        $client->update();
+
+        return $client;
     }
 
     public function delete(Client $client)
     {
-
+        return $client->delete();
     }
 }
