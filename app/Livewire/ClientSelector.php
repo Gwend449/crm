@@ -10,15 +10,20 @@ class ClientSelector extends Component
     public $selectedClientId;
     public $carModel = '';
 
-    public function mount()
+    public function mount($selectedClientId = null)
     {
         $this->clients = Client::all();
+
+        if ($selectedClientId) {
+            $this->selectedClientId = $selectedClientId;
+            $this->carModel = Client::find($selectedClientId)?->car_model;
+        }
     }
 
-    public function updatedSelectedClientId($id)
+    public function updatedSelectedClientId($clientId)
     {
-        $client = Client::find($id);
-        $this->carModel = $client->car_model ?? '';
+        logger('selected client: ', [$clientId]);
+        $this->carModel = $clientId ? Client::find($clientId)?->car_model : '';
     }
     public function render()
     {

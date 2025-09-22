@@ -2,8 +2,6 @@
 
 namespace App\DTO;
 
-use Symfony\Component\Mime\Part\Multipart\RelatedPart;
-
 class ClientDTO
 {
     public function __construct(
@@ -19,5 +17,14 @@ class ClientDTO
             $request->input('email'),
             $request->input('car_model') ?? null,
         );
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'email' => $this->email,
+            'car_model' => $this->car_model,
+        ];
     }
 }

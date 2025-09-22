@@ -7,8 +7,7 @@ use App\Http\Requests\UpdateDealRequest;
 use App\Models\Deal;
 use App\Models\Client;
 use App\Services\DealService;
-use App\Services\ClientService;
-use Illuminate\Http\Request;
+use App\DTO\DealDTO;
 
 class DealController extends Controller
 {
@@ -24,15 +23,9 @@ class DealController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Deal $deals)
     {
-        $clients = Client::all();
-
-        //оставлю пока так в учебном проекте,
-        // понимаю что с базой в 1к+ записей нужно реализовать поиск по клиентам с использованием фронт библиотек,
-        // но пока оставим это.
-
-        return view('deals.create', ['clients' => $clients]);
+        return view('deals.create', ['deals' => $deals]);
     }
 
     /**
@@ -40,7 +33,8 @@ class DealController extends Controller
      */
     public function store(StoreDealRequest $request, DealService $dealService)
     {
-        $dealService->store($request->validated());
+        $dto = DealDTO::fromRequest($request);
+        $dealService->store($dto);
 
         return redirect()->route('deals.index')
             ->with('success', 'Deal created');
@@ -51,15 +45,15 @@ class DealController extends Controller
      */
     public function show(Deal $deal)
     {
-        return view('deal.show', ['deals' => $deal]);
+        return view('deals.show', ['deal' => $deal]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Deal $deal)
+    public function edit(Deal $deal, Client $client)
     {
-        return view('deals.edit', ['deals' => $deal]);
+        return view('deals.edit', ['deals' => $deal, 'clients' => $client]);
     }
 
     /**

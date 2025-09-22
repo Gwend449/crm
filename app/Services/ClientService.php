@@ -4,9 +4,12 @@ namespace App\Services;
 
 use App\Models\Client;
 use App\DTO\ClientDTO;
-use App\Mappers\ClientMapper;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class ClientService {
+
+
+class ClientService
+{
 
     public function getAllClients()
     {
@@ -19,15 +22,18 @@ class ClientService {
     }
     public function store(ClientDTO $dto): Client
     {
-        $client = ClientMapper::toModel($dto);
-        $client->save();
-
-        return $client;
+        return Client::create($dto->toArray());
     }
 
-    public function update(Client $client, ClientDTO $dto)
+    public function update($id, ClientDTO $dto): ?Client
     {
-        $client = ClientMapper::updateModel($client, $dto);
+        $client = Client::find($id);
+
+        if (!$client) {
+            throw new ModelNotFoundException("Client with {$id} not found");
+        }
+
+        $client->fill($dto->toArray());
         $client->update();
 
         return $client;

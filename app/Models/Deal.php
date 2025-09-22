@@ -12,8 +12,10 @@ class Deal extends Model
     protected $fillable = [
         'client_id',
         'service_name',
+        'comment',
         'price',
         'date',
+        'status'
     ];
 
     protected $casts = [
@@ -22,6 +24,6 @@ class Deal extends Model
 
     public function client()
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Client::class, 'client_id', 'id');
     }
 }

@@ -22,11 +22,12 @@ class UpdateDealRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => 'required|date|after:today',
             'client_id' => 'required|exists:clients,id',
             'service_name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
             'comment' => 'nullable|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'date' => 'required|date|after:today',
+            'status' => 'required|in:new,pending,completed,canceled',
         ];
     }
 }
