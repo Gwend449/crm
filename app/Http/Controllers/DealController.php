@@ -23,9 +23,9 @@ class DealController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Deal $deals)
+    public function create(Deal $deal)
     {
-        return view('deals.create', ['deals' => $deals]);
+        return view('deals.create', ['deals' => $deal]);
     }
 
     /**
@@ -34,7 +34,7 @@ class DealController extends Controller
     public function store(StoreDealRequest $request, DealService $dealService)
     {
         $dto = DealDTO::fromRequest($request);
-        $dealService->store($dto);
+        $dealService->storeDeal($dto);
 
         return redirect()->route('deals.index')
             ->with('success', 'Deal created');
@@ -53,7 +53,7 @@ class DealController extends Controller
      */
     public function edit(Deal $deal, Client $client)
     {
-        return view('deals.edit', ['deals' => $deal, 'clients' => $client]);
+        return view('deals.edit', ['deals' => $deal, 'client' => $client]);
     }
 
     /**
@@ -61,7 +61,7 @@ class DealController extends Controller
      */
     public function update(UpdateDealRequest $request, Deal $deal, DealService $dealService)
     {
-        $dealService->update($deal, $request->validated());
+        $dealService->updateDeal($deal, $request->validated());
 
         return redirect('deals.index')->with('success', 'Deal was updated');
     }
@@ -72,7 +72,7 @@ class DealController extends Controller
     public function destroy(Deal $deal, DealService $dealService)
     {
         if ($dealService->find($deal->id)) {
-            $dealService->delete($deal);
+            $dealService->deleteDeal($deal);
             return redirect()->route('deals.index')->with('success', 'Deal was deleted');
         }
     }

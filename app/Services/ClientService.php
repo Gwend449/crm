@@ -16,22 +16,18 @@ class ClientService
         return Client::paginate(10);
     }
 
-    public function find(int $id): ?Client
+    public function findClient(int $id): ?Client
     {
-        return Client::find($id);
+        return Client::findOrFail($id);
     }
-    public function store(ClientDTO $dto): Client
+    public function storeClient(ClientDTO $dto): Client
     {
         return Client::create($dto->toArray());
     }
 
-    public function update($id, ClientDTO $dto): ?Client
+    public function updateClient(int $id, ClientDTO $dto): ?Client
     {
-        $client = Client::find($id);
-
-        if (!$client) {
-            throw new ModelNotFoundException("Client with {$id} not found");
-        }
+        $client = Client::findOrFail($id);
 
         $client->fill($dto->toArray());
         $client->update();
@@ -39,7 +35,7 @@ class ClientService
         return $client;
     }
 
-    public function delete(Client $client)
+    public function deleteClient(Client $client)
     {
         return $client->delete();
     }

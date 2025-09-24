@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Client;
+
 class ClientSelector extends Component
 {
     public $clients;
@@ -12,7 +13,7 @@ class ClientSelector extends Component
 
     public function mount($selectedClientId = null)
     {
-        $this->clients = Client::all();
+        $this->clients = Client::limit(500)->get();
 
         if ($selectedClientId) {
             $this->selectedClientId = $selectedClientId;

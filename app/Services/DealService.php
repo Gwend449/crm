@@ -16,20 +16,16 @@ class DealService
 
     public function find(int $id): ?Deal
     {
-        return Deal::find($id);
+        return Deal::findOrFail($id);
     }
-    public function store(DealDTO $dto): Deal
+    public function storeDeal(DealDTO $dto): Deal
     {
         return Deal::create($dto->toArray());
     }
 
-    public function update($id, DealDTO $dto): Deal
+    public function updateDeal($id, DealDTO $dto): Deal
     {
-         $deal = Deal::find($id);
-
-       if (!$deal) {
-            throw new ModelNotFoundException("Deal with {$id} not found");
-        }
+        $deal = Deal::findOrFail($id);
 
         $deal->fill($dto->toArray());
         $deal->update();
@@ -37,7 +33,7 @@ class DealService
         return $deal;
     }
 
-    public function delete(Deal $deal)
+    public function deleteDeal(Deal $deal)
     {
         return $deal->delete();
     }
