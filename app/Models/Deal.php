@@ -12,8 +12,10 @@ class Deal extends Model
     protected $fillable = [
         'client_id',
         'service_name',
+        'comment',
         'price',
         'date',
+        'status'
     ];
 
     protected $casts = [

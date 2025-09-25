@@ -34,7 +34,7 @@ class ClientController extends Controller
     public function store(StoreClientRequest $request, ClientService $clientService)
     {
         $clientDTO = ClientDTO::fromRequest($request);
-        $clientService->store($clientDTO);
+        $clientService->storeClient($clientDTO);
 
         return redirect()->route('clients.index')
             ->with('success', 'Client added');
@@ -62,7 +62,7 @@ class ClientController extends Controller
     public function update(UpdateClientRequest $request, Client $client, ClientService $clientService)
     {
         $clientDTO = ClientDTO::fromRequest($request);
-        $clientService->update($client, $clientDTO);
+        $clientService->updateClient($client, $clientDTO);
 
         return redirect()->route('clients.index')
             ->with('success', 'Client was updated');
@@ -70,9 +70,8 @@ class ClientController extends Controller
 
     public function getCar()
     {
-        //$clientCar = Client::where('client_id', $client_id)->pluck('car_model', 'id');
         $client = Client::find('client_id');
-        return response()->json(['car_model'=>$client->car_model]);
+        return response()->json(['car_model' => $client->car_model]);
     }
 
     /**
@@ -80,9 +79,7 @@ class ClientController extends Controller
      */
     public function destroy(Client $client, ClientService $clientService)
     {
-        if ($clientService->find($client->id)) {
-            $clientService->delete($client);
-            return redirect()->route('clients.index')->with('success', 'Client deleted');
-        }
+        $clientService->deleteClient($client);
+        return redirect()->route('clients.index')->with('success', 'Client deleted');
     }
 }

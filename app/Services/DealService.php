@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Models\Deal;
+use App\DTO\DealDTO;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class DealService {
+class DealService
+{
 
     public function getAllDeals()
     {
@@ -13,19 +16,24 @@ class DealService {
 
     public function find(int $id): ?Deal
     {
-        return Deal::find($id);
+        return Deal::findOrFail($id);
     }
-    public function store(array $data): Deal
+    public function storeDeal(DealDTO $dto): Deal
     {
-        return Deal::create($data);
+        return Deal::create($dto->toArray());
     }
 
-    public function update(Deal $deal, array $data)
+    public function updateDeal($id, DealDTO $dto): Deal
     {
-        return $deal->update($data);
+        $deal = Deal::findOrFail($id);
+
+        $deal->fill($dto->toArray());
+        $deal->update();
+
+        return $deal;
     }
 
-    public function delete(Deal $deal)
+    public function deleteDeal(Deal $deal)
     {
         return $deal->delete();
     }

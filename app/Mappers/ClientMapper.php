@@ -18,7 +18,6 @@ class ClientMapper
 
     public static function updateModel(Client $client, ClientDTO $dto): Client
     {
-
         $client->fill([
             'name' => $dto->name,
             'email' => $dto->email,

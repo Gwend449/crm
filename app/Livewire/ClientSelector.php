@@ -4,21 +4,27 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Client;
+
 class ClientSelector extends Component
 {
     public $clients;
     public $selectedClientId;
     public $carModel = '';
 
-    public function mount()
+    public function mount($selectedClientId = null)
     {
-        $this->clients = Client::all();
+        $this->clients = Client::limit(500)->get();
+
+        if ($selectedClientId) {
+            $this->selectedClientId = $selectedClientId;
+            $this->carModel = Client::find($selectedClientId)?->car_model;
+        }
     }
 
-    public function updatedSelectedClientId($id)
+    public function updatedSelectedClientId($clientId)
     {
-        $client = Client::find($id);
-        $this->carModel = $client->car_model ?? '';
+        logger('selected client: ', [$clientId]);
+        $this->carModel = $clientId ? Client::find($clientId)?->car_model : '';
     }
     public function render()
     {
