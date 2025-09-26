@@ -14,7 +14,7 @@
             <p><strong>Status:</strong> {{ $deal?->status }}</p>
         </div>
 
-        <a href="{{ route('clients.index') }}"
+        <a href="{{ route('deals.index') }}"
             class="inline-block mt-4 p-2 bg-gray-600 text-white rounded hover:bg-gray-700">
             Back to the deals list
         </a>

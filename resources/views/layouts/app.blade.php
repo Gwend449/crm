@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRM</title>
     @vite('resources/css/app.css')
+    @livewireStyles
 </head>
 
 <body class="bg-gray-100 text-gray-900 flex flex-col min-h-screen">
@@ -19,6 +20,7 @@
 
         @yield('content')
     </main>
+    @livewireScripts
 </body>
 
 <footer class="bg-gray-800 text-gray-400 text-center py-4 mt-6">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexCLientRequest;
 use App\Http\Requests\StoreCLientRequest;
 use App\Http\Requests\UpdateCLientRequest;
 use App\Mappers\ClientMapper;
@@ -14,10 +15,12 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(ClientService $clientsService)
+    public function index()
     {
-        $clients = $clientsService->getAllClients();
-        return view('clients.index', ['clients' => $clients]);
+        // $filters = $request->validated();
+        // $clients = $clientsService->getSortedClients($filters);
+
+        return view('clients.index');
     }
 
     /**
