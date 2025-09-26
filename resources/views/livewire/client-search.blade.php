@@ -10,9 +10,6 @@
             <option value="desc">Я-А</option>
         </select>
 
-        <!-- <button class="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-            type="submit">Filter</button> -->
-
         <button type="button" wire:click="resetFilters"
             class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors">
             Reset
@@ -22,8 +19,15 @@
     <table class="w-full mt-6 border">
         <thead>
             <tr class="bg-gray-100">
-                <th class="p-2 border">id</th>
-                <th class="p-2 border">Name</th>
+                <th class="p-2 border">ID</th>
+                <th class="p-2 border cursor-pointer select-none" wire:click="sortByName">
+                    Name
+                    @if ($sort === 'asc')
+                        ▲
+                    @elseif ($sort === 'desc')
+                        ▼
+                    @endif
+                </th>
                 <th class="p-2 border">Email</th>
                 <th class="p-2 border">Car</th>
                 <th class="p-2 border">Action</th>

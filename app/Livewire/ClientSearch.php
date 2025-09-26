@@ -38,6 +38,10 @@ class ClientSearch extends Component
         $this->resetPage();
     }
 
+    public function sortByName()
+    {
+        $this->sort = $this->sort === 'asc' ? 'desc' : 'asc';
+    }
     public function render()
     {
         $clients = (new ClientService())->getSortedClients([

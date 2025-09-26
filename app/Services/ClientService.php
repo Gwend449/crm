@@ -43,7 +43,7 @@ class ClientService
             $query->where('name', 'like', '%' . $filters['name'] . '%');
         }
 
-        if (!empty($filters['sort'])) {
+        if (!empty($filters['sort']) && in_array(strtolower($filters['sort']), ['asc', 'desc'])) {
             $query->orderBy('name', $filters['sort']);
         }
 
