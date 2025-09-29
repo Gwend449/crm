@@ -22,6 +22,23 @@ class Deal extends Model
         'date' => 'datetime',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($deal) {
+            if (!$deal->date) {
+                $deal->date = now();
+            }
+
+            if (!$deal->status) {
+                if (!$deal->status) {
+                    $deal->status = 'new';
+                }
+            }
+        });
+    }
+
     public function client()
     {
         return $this->belongsTo(Client::class);

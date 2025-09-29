@@ -1,61 +1,49 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# CRM.detailing
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+CRM.detailing - system for store clients and deals in detailing business. Before, all records in studio was writing on board or just keeping in head of owner, thats why we decided to develop directed cms to our tasks.
 
-## About Laravel
+This application show my thinking way, architecture patters i use in developing. Project is simple (MVP), but have strong fundament and easy to scale, because i write all lines of code keeping "decoupling" concept in mind.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Technologies
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Because business task was improve process of communication with clients, i choose next tools for implementation:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8 (analytics, security, automate for personal needs)
+- Laravel 12 + Tailwind (quick write simple app, MVC framework)
+- Livewire (write dynamic interface on page in easy way)
+- MySQL (i always take it when develop applications)
 
-## Learning Laravel
+## Overview
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Dashboard
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+![Скриншот главной страницы приложения] (public/images/doc_images/Screenshot_1.png)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+There is nothing special on this page, just printing several variables to show data. It was done by Eloquent ORM.
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Clients page
+![Скриншот страницы клиентов] (public/images/doc_images/Screenshot_2.png)
 
-### Premium Partners
+There is client's page with table. I added some filters: search by name (thanks to Livewire to simplify my life) and sorting by alphabet (Livewire).
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### CRUD for clients
+![Скриншот страницы добавления нового клиента] (public/images/doc_images/Screenshot_4.png)
 
-## Contributing
+Initially, all logic for adding, updating, and validating data was located in a single controller, which over time started to look like a "mixed salad." To solve this issue, I applied the following improvements: 
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- `FormRequest`: moved all validation logic into a separate class, where I defined rules for creating and updating client information.
+- `ClientService`: moved infrastructural logic into a service, which helped to keep the controller light and adhere to the `SRP` principle.
+- `DTO (Data Transfer Object)`: used DTOs to secure and structure incoming data from forms. For a project of this size it might look weird, but my goal was to demonstrate thinking ing enterprise-level practices.
+- `Reflection and Traits`: extended DTOs with reflection and traits to improve flexibility. Reflection was introduced for scalability, so when we add new fields to database, changes are minimized across the codebase. Traits act as helpers, making the code cleaner and easier to maintain.
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### CRUD for deals
+![Скриншот главной страницы приложения](public/images/doc_images/Screenshot_5.png)
 
-## Security Vulnerabilities
+- Here i did all the same things as i wrote above. Paginate, filtration, dynamic interface livewire (for example client's car in deal edit page).  
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+![Скриншот изменения данных о сделке](public/images/doc_images/Screenshot_6.png)
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Base functionality give big space to make code more complex, add new features and other things. But again i repeat — my goal was demonstrate knowledge of fundamental approach to design and development in short time for myself.
