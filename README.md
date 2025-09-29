@@ -1,52 +1,48 @@
 # CRM.detailing
 
-CRM.detailing - система для хранения клиентов и сделок в детейлинге. Весь учет в студии вёлся на доске или в голове у владельца, поэтому остро стоял вопрос автоматизации бизнеса.ъ
+CRM.detailing - system for store clients and deals in detailing business. Before, all records in studio was writing on board or just keeping in head of owner, thats why we decided to develop directed cms to our tasks.
 
-От приложения требовалась демонстрация моего мышления, то какими паттернами пользуюсь при разработке. Проект небольшой, но с хорошим фундаментом под будущее масштабирование благодаря тому, что всегда придерживался принципа decoupling.
+This application show my thinking way, architecture patters i use in developing. Project is simple (MVP), but have strong fundament and easy to scale, because i write all lines of code keeping "decoupling" concept in mind.
 
-Приложение представляет собой Minimal Viable Product. 
-## Постановка задачи
+## Technologies
 
-Поскольку бизнес-задача стояла улучшить процесс взаимодействия с клиентами я выбрал следующий инструментарий для реализации:
-- PHP 8 (позволяет получать аналитику, безопасность, автоматизировать под личные нужды)
-- Laravel 12 + Tailwind (позволяет просто и быстро написать приложение под нашу цель, MVC-фреймворк)
-- Livewire (позволяет просто писать динамический интерфейс на странице)
-- MySql (всегда беру при написании подобных приложений)
+Because business task was improve process of communication with clients, i choose next tools for implementation:
 
-## Демонстрация
+- PHP 8 (analytics, security, automate for personal needs)
+- Laravel 12 + Tailwind (quick write simple app, MVC framework)
+- Livewire (write dynamic interface on page in easy way)
+- MySQL (i always take it when develop applications)
+
+## Overview
 
 ### Dashboard
 
-![Скриншот главной страницы приложения] (public/images/doc_images/Screenshot_1.png)
+![Main page screenshot] (public/images/doc_images/Screenshot_1.png)
 
-На данной странице ничего особенного, просто вывод нескольких переменных, в которые подтягивается информация с бд. Реализовано с помощью Eloquent ORM.
+There is nothing special on this page, just printing several variables to show DB information for User. It was wrote with Eloquent ORM.
 
-Это главная страница приложения, которая открывается по умолчанию.
+### Client page
+![Clients side screenshot] (public/images/doc_images/Screenshot_2.png)
 
-### Страница со списком клиентов
-![Скриншот страницы клиентов] (public/images/doc_images/Screenshot_2.png)
+There is client's page with table. I added some filters: search by name (thanks to Livewire to simplify my life) and sorting by alphabet (Livewire).
 
-На этой странице представлена таблица с данными из таблицы Clients. Также небольшой набор фильтров: поиск по имени (с помощью Livewire реализован функционал мнгновенного поиска при вводе символа) и сортировка по алфавиту по нажатию на колонку (Livewire).
+### CRUD for clients
+![new client page] (public/images/doc_images/Screenshot_4.png)
 
-Изначально был реализован обычный поиск по конечному слову и кнопка Filter, но потом пришла идея реализовать поиск, описанный выше и спустя время решил воспользоваться готовой библиотекой livewire, что ускорило процесс в разы.
+Initially, all logic for adding, updating, and validating data was located in a single controller, which over time started to look like a "mixed salad." To solve this issue, I applied the following improvements: 
 
-### CRUD для клиентов
-![Скриншот страницы добавления нового клиента] (public/images/doc_images/Screenshot_4.png)
+- `FormRequest`: moved all validation logic into a separate class, where I defined rules for creating and updating client information.
+- `ClientService`: moved infrastructural logic into a service, which helped to keep the controller light and adhere to the `SRP` principle.
+- `DTO (Data Transfer Object)`: used DTOs to secure and structure incoming data from forms. For a project of this size it might look weird, but my goal was to demonstrate thinking ing enterprise-level practices.
+- `Reflection and Traits`: extended DTOs with reflection and traits to improve flexibility. Reflection was introduced for scalability, so when we add new fields to database, changes are minimized across the codebase. Traits act as helpers, making the code cleaner and easier to maintain.
 
-Изначально вся логика по добавлению, изменению, валидации находилась в одном контроллере, что со временем выглядело как сборная солянка, и для решения этой проблемы я решил:
-- Вынести валидацию в отдельный `FormRequest` где прописал все правила для создания/изменения информации для клиента. 
-- Вынес всю инфраструктурную логику в отдельный `ClientSerivce`, что позволило разгрузить контроллер и придерживаться `SPR` принципу
-- Далее решил обезопасить данные, которые поступают с форму с помощью Data Transfer Object (`DTO`). Возможно для такого приложения применение этого принципа исчерпывающе, но опять же, моя цель была демонстрация мышления в парадигме enterpise проектов. 
-- В конце концов решил дополнить `DTO` рефлексией и трейтами для совершенствования логики. Рефлексия в свою очередь потребовалась для масштабирования, так как при добавлении новых полей в таблицу не пришлось бы добавлять код во многих местах, трейты в свою очередь выступают в роли хелпера, что помогает упростить код.
 
 ### CRUD для сделок
 ![Скриншот главной страницы приложения] (public/images/doc_images/Screenshot_5.png)
 
-- С этой сущностью проделано все то, что описано выше для Clients. Пагинация, фильтрация, динамический интерфейс с помощью livewire. 
-- При изменении или добавлении сделки сразу подтягивается информации об автомобиле выбранного клиента, это было реализовано благодаря livewire. В остальном вся логика, все принципы остались такие же.
-- По умолчанию при добавлении сделки ее статус равен `new`. 
+- Here i did all the same things as i wrote above. Paginate, filtration, dynamic interface livewire (for example client's car in deal edit page).  
 
 ![Скриншот изменения данных о сделке] (public/images/doc_images/Screenshot_6.png)
 
 
-Базовый функционал даёт большое пространство, чтобы усложнить код, дополнить его новыми фишками и прочее, но опять же повторюсь - моя цель была продемонстрировать знания фундаментального подхода к проектированию и разработке в короткий для себя срок.
+Base functionality give big space to make code more complex, add new features and other things. But again i repeat — my goal was demonstrate knowledge of fundamental approach to design and development in short time for myself.
