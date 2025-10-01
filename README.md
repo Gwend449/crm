@@ -23,7 +23,7 @@ There is nothing special on this page, just printing several variables to show d
 
 
 ### Clients page
-![Скриншот страницы клиентов](https://github.com/Gwend449/crm/blob/597e0dc7c2ba3b909ce70db9b65d6d2b173cfdef/Screenshot_2.png))
+![Скриншот страницы клиентов](https://github.com/Gwend449/crm/blob/597e0dc7c2ba3b909ce70db9b65d6d2b173cfdef/Screenshot_2.png)
 
 There is client's page with table. I added some filters: search by name (thanks to Livewire to simplify my life) and sorting by alphabet (Livewire).
 
