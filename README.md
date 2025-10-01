@@ -17,18 +17,18 @@ Because business task was improve process of communication with clients, i choos
 
 ### Dashboard
 
-![Скриншот главной страницы приложения] (public/images/doc_images/Screenshot_1.png)
+![Скриншот главной страницы приложения] (https://github.com/Gwend449/crm/blob/597e0dc7c2ba3b909ce70db9b65d6d2b173cfdef/Screenshot_1.png)
 
 There is nothing special on this page, just printing several variables to show data. It was done by Eloquent ORM.
 
 
 ### Clients page
-![Скриншот страницы клиентов] (public/images/doc_images/Screenshot_2.png)
+![Скриншот страницы клиентов] (https://github.com/Gwend449/crm/blob/597e0dc7c2ba3b909ce70db9b65d6d2b173cfdef/Screenshot_2.png))
 
 There is client's page with table. I added some filters: search by name (thanks to Livewire to simplify my life) and sorting by alphabet (Livewire).
 
 ### CRUD for clients
-![Скриншот страницы добавления нового клиента] (public/images/doc_images/Screenshot_4.png)
+![Скриншот страницы добавления нового клиента] (https://github.com/Gwend449/crm/blob/597e0dc7c2ba3b909ce70db9b65d6d2b173cfdef/Screenshot_4.png)
 
 Initially, all logic for adding, updating, and validating data was located in a single controller, which over time started to look like a "mixed salad." To solve this issue, I applied the following improvements: 
 
